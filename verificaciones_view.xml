@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+    <!-- VISTA PARA LAS MARCAS -->
+    <record id="inventario_marcas_view_tree" model="ir.ui.view">
+        <field name="name">inventario.marcas.view.tree</field>
+        <field name="model">inventario.marcas.equipos</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Marcas">
+                <field name="name"/>
+                <field name="descripcion"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="inventario_marcas_view_form" model="ir.ui.view">
+        <field name="name">inventario.marcas.view.form</field>
+        <field name="model">inventario.marcas.equipos</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Marcas">
+                <field name="name" colspan="4"/>
+                <field name="descripcion" colspan="4"/>
+            </form>
+        </field>
+    </record>
+    
+    <record id="inventario_marcas_view_search" model="ir.ui.view">
+        <field name="name">inventario.marcas.view.search</field>
+        <field name="model">inventario.marcas.equipos</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Marcas">
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+    
+    <!-- VISTAS PARA LOS TIPOS DE EQUIPO -->
+    
+    <record id="inventario_tipo_view_tree" model="ir.ui.view">
+        <field name="name">inventario.tipo.view.tree</field>
+        <field name="model">inventario.tipo.equipos</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Tipos de Equipo">
+                <field name="name"/>
+                <field name="descripcion"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="inventario_tipo_view_form" model="ir.ui.view">
+        <field name="name">inventario.tipo.view.form</field>
+        <field name="model">inventario.tipo.equipos</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Tipos de Equipo">
+                <field name="name" colspan="4"/>
+                <field name="descripcion" colspan="4"/>
+            </form>
+        </field>
+    </record>
+    
+    <record id="inventario_tipo_view_search" model="ir.ui.view">
+        <field name="name">inventario.tipo.view.search</field>
+        <field name="model">inventario.tipo.equipos</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Tipos de Equipo">
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+    
+    <!-- VISTAS PARA EL SOFTWARE-->
+    
+    <record id="inventario_software_view_tree" model="ir.ui.view">
+        <field name="name">inventario.software.view.tree</field>
+        <field name="model">inventario.software</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Software">
+                <field name="name"/>
+                <field name="licencia"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="inventario_software_view_form" model="ir.ui.view">
+        <field name="name">inventario.sofware.view.form</field>
+        <field name="model">inventario.software</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Sofware">
+                <field name="name" colspan="2"/>
+                <field name="licencia"/>
+                <field name="anotaciones" colspan="4"/>
+            </form>
+        </field>
+    </record>
+    
+    
+    <!-- VISTAS PARA EL MANTENIMIENTO-->
+    
+    <record id="inventario_mantenimiento_view_tree" model="ir.ui.view">
+        <field name="name">inventario.mantenimiento.view.tree</field>
+        <field name="model">inventario.mantenimiento</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Mantenimiento" colors="blue:state=='si';red:state=='no'">
+                <field name="name"/>
+                <field name="fecha"/>
+                <field name="tipo"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="inventario_mantenimiento_view_form" model="ir.ui.view">
+        <field name="name">inventario.mantenimiento.view.form</field>
+        <field name="model">inventario.mantenimiento</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Mantenimiento">
+                <field name="name"/>
+                <field name="fecha"/>
+                <field name="tipo"/>
+                <field name="state"/>
+                <field name="descripcion" colspan="4"/>
+            </form>
+        </field>
+    </record>
+    
+    <!-- VISTAS PARA LOS EQUIPOS DEL LABORATORIO -->
+
+    <record id="inventario_equipo_view_tree" model="ir.ui.view">
+        <field name="name">inventario.equipo.view.tree</field>
+        <field name="model">inventario.equipo</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Inventario del Corporativo" colors="blue:state=='uso';red:state=='descompuesto'; grey:state=='fuera'">
+                <field name="no_inventario"/>
+                <field name="name"/>
+                <field name="descripcion"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="inventario_equipo_view_form" model="ir.ui.view">
+        <field name="name">inventario.equipo.view.form</field>
+        <field name="model">inventario.equipo</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Equipo del Corporativo Serca">
+                <group col="2" colspan="3">
+                    <field name="no_inventario"/>
+                    <field name="name"/>
+                    <field name="marca"/>
+                    <field name="modelo"/>
+                    <field name="no_serie"/>    
+                    <field name="snid"/>
+                </group>
+                <group col="2" colspan="1">
+                    <field name="state"/>
+                </group>
+                <separator string="Descripción" colspan="4"/>
+                <field name="descripcion" nolabel="1" colspan="4"/>
+                <notebook>
+                    <page string="Software">
+                        <field name="software" colspan="4" widget="one2many_list"/>
+                    </page>
+                    <page string="Mantenimiento">
+                        <field name="mantenimiento" colspan="4" widget="one2many_list"/>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+        
+    
+    <!-- VISTA DE BUSQUEDA PARA EQUIPO -->
+    <record id="inventario_equipo_view_search" model="ir.ui.view">
+        <field name="name">inventario.equipo.view.search</field>
+        <field name="model">inventario.equipo</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Equipo">
+                <filter string="EN USO" icon="STOCK_EDIT" domain="[('state','=','uso')]"/>
+                <filter string="DESCOMPUESTO" icon="STOCK_REDO" domain="[('state','=','descompuesto')]"/>
+                <filter string="FUERA" icon="STOCK_UNDO" domain="[('state','=','fuera')]"/>
+                <separator orientation="vertical"/>
+                <newline/>
+            </search>
+        </field>
+    </record>
+    
+    <!-- ACCIONES PARA LAS VISTAS -->
+                    <!-- TIPOS DE EQUIPO-->
+    <record id="action_inventario_tipo_equipo" model="ir.actions.act_window">
+        <field name="name">Tipo de Equipo</field>
+        <field name="res_model">inventario.tipo.equipos</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="inventario_tipo_view_tree"/>
+        <field name="search_view_id" ref="inventario_tipo_view_search"/>
+    </record>
+    
+                    <!-- MARCAS-->
+    <record id="action_inventario_marca_equipo" model="ir.actions.act_window">
+        <field name="name">Marcas</field>
+        <field name="res_model">inventario.marcas.equipos</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="inventario_marcas_view_search"/>
+    </record>
+                    <!-- INVENTARIO DE EQUIPO-->
+    <record id="action_inventario_equipo" model="ir.actions.act_window">
+        <field name="name">Inventario de Equipo</field>
+        <field name="res_model">inventario.equipo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="inventario_equipo_view_tree"/>  
+        <field name="search_view_id" ref="inventario_equipo_view_search"/>
+    </record>
+                   
+    <!-- MENUS -->
+    <menuitem name="Control de Equipo" id="menu_control_equipo" parent="menu_inventario"/>
+    <menuitem action="action_inventario_equipo" id="menu_action_inventario_equipo" parent="menu_control_equipo"/>
+    <menuitem action="action_inventario_tipo_equipo" id="menu_action_inventario_tipo_equipo" parent="menu_control_equipo"/>
+    <menuitem action="action_inventario_marca_equipo" id="menu_action_inventario_marca_equipo" parent="menu_control_equipo"/>
+    
+    </data>
+</openerp>
