@@ -28,13 +28,13 @@
 
 {
     "name" : "Verificaciones",
-    "version" : "0.1",
+    "version" : "0.0.4",
     "depends": ["base"],
     "author" : "Salvador Daniel Pelayo Gómez",
     "website": "http://www.corporativoserca.com",
     "category" : "Generic Modules/Others",
     "description" : """
-Modulo para llevar el control del equipo que hay en el Corporativo.
+Modulo para el área de ESE Corporativo Serca.
 """,
     "init_xml" : [],
     "update_xml" : ["verificaciones_menu.xml",

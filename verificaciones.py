@@ -38,6 +38,12 @@ class verificaciones(osv.osv):
         ids = country_obj.search(cr, uid, [ ( 'code', '=', 'MX' ), ], limit=1)
         id = ids and ids[0] or False
         return id
+	
+	def _get_company(self, cr, uid, context=None):
+        country_obj = self.pool.get('res.company')
+        ids = country_obj.search(cr, uid, [], limit=1)
+        id = ids and ids[0] or False
+        return id
 
     _name="verificaciones"
     _columns={
@@ -104,19 +110,26 @@ class verificaciones(osv.osv):
 		'fachada': fields.binary("Fachada"),
 		'investigador': fields.binary("Investigador"),
 		##DATOS DE CONTROL CORPORATIVO SERCA
-		'verificador': fields.many2one("res.users", "Verificador Asignado"),
-		'fecha'
+		'fecha_solicitud': fields.date("Fecha de Solicitud", required=True),
+		'visitador': fields.many2one("res.users", "Visitador Asignado"),
+		'user_id': fields.many2one("res.users", "Ejecutivo", required=True),
+		'fecha_asignacion': fields.datetime("Fecha y Hora de asignación", readonly=True),
+		'compania': fields.many2one("res.company", "Compañia verificadora", required=True),
+		'folio': fields.char("Folio", size=50, required=True),
+		'fecha_entrega': fields.date("Fecha de Entrega"),
         'state': fields.selection((
-            ("uso","Equipo en Uso"),
-            ("descompuesto","Equipo Descompuesto"),
-            ("fuera","Equipo ya no existente")
-        ), "Estado", help="Selecciona el estado en el que se encuentra el equipo."),
+            ("borrador", "Borrador"),
+            ("asignada", "Asignada"),
+            ("aceptada", "Verificación Aceptada"),
+			("declinada", "Verificación Declinada"),
+			("entregada", "Entregada"),
+			("cancelada", "Cancelada")
+        ), "Estado", required=True),
     }
     _defaults={
         'pais_id': _get_default_pais_id,
+		'compania': _get_company,
+		'folio': "NO APLICA",
+		'state': "borrador"
     }
-	
-    _sql_constraints = [
-        ('no_inventario_uniq', 'unique(no_inventario)', 'El número de inventario debe de ser unico!'),
-    ]
-inventario_equipo()
+verificaciones()
