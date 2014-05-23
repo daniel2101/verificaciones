@@ -1,7 +1,0 @@
-"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-"acceso_inventario_marcas","Inventario Marcas","model_inventario_marcas_equipos","inventario.inventario_sistemas",1,1,1,1
-"acceso_inventario_tipo_equipo","Inventario Tipo Equipo","model_inventario_tipo_equipos","inventario.inventario_sistemas",1,1,1,1
-"acceso_inventario_software","Inventario Software","model_inventario_software","inventario.inventario_sistemas",1,1,1,1
-"acceso_inventario_mantenimiento","Inventario Mantenimiento","model_inventario_mantenimiento","inventario.inventario_sistemas",1,1,1,1
-"acceso_inventario_equipo","Inventario Equipo","model_inventario_equipo","inventario.inventario_sistemas",1,1,1,1
-

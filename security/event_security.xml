@@ -1,8 +1,16 @@
 <?xml version="1.0"?>
 <openerp>
   <data>
-    <record id="inventario_sistemas" model="res.groups">
-        <field name="name">Sistemas</field>
+    <record id="verificaciones_cordinador" model="res.groups">
+        <field name="name">Cordinador Verificaciones</field>
+    </record>
+	
+	<record id="verificaciones_verificador" model="res.groups">
+        <field name="name">Verificador</field>
+    </record>
+	
+	<record id="verificaciones_consultas" model="res.groups">
+        <field name="name">Verificaciones Consultas</field>
     </record>
   </data>
 </openerp>

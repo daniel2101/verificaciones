@@ -8,13 +8,13 @@
         <field name="model">verificaciones</field>
         <field name="type">tree</field>
         <field name="arch" type="xml">
-            <tree string="Verificaciones">
-				<field name="no_cliente"/>
-                <field name="name"/>
-				<field name="visitador"/>
-				<field name="fecha_solicitud" string="Solicitud"/>
-				<field name="fecha_asignacion" string="Asignación"/>
-				<field name="state"/>
+            <tree colors="pink:state=='borrador';gray:state=='cancelada';blue:state=='asignada';green:state=='entregada';orange:state=='declinada'" string="Verificaciones">
+				<field name="no_cliente" select="1"/>
+                <field name="name" select="1"/>
+				<field name="visitador" select="1"/>
+				<field name="fecha_solicitud" string="Solicitud" select="1"/>
+				<field name="fecha_asignacion" string="Asignación" select="1"/>
+				<field name="state" select="1"/>
             </tree>
         </field>
     </record>
@@ -26,13 +26,104 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="Verificación">
-                <field name="name" colspan="4"/>
-                <field name="descripcion" colspan="4"/>
+				<group col="4" colspan="8"/>
+					<group col="6" colspan="6">
+						<field name="sucursal" colspan="4"/>
+						<field name="no_sucursal" colspan="2"/>
+						<field name="name" colspan="4"/>
+						<field name="no_cliente" colspan="2"/>
+						<field name="domicilio" colspan="4"/>
+						<field name="telefono" colspan="2"/>
+						<group col="6" colspan="8">
+							<field name="pais_id" invisible="1"/>
+							<field name="colonia"/>
+							<field name="municipio"/>
+							<field name="estdo_id"/>
+							<field name="cp"/>
+						</group>
+					</group>
+					<group col="2" colspan="2">
+						<field name="tipo_persona"/>
+						<field name="fecha_solicitud" readonly="1" groups="verificaciones.verificaciones_verificador"/>
+						<field name="fecha_solicitud" readonly="1" groups="verificaciones.verificaciones_consultas"/>
+						<field name="fecha_solicitud" groups="verificaciones.verificaciones_cordinador"/>
+					</group>
+				</group>
+				<notebook>
+					<page string="Datos CSerca" groups="verificaciones.verificaciones_cordinador">
+						<group col="6" colspan="4">
+							<field name="user_id"/>
+							<field name="visitador"/>
+							<field name="fecha_asignacion"/>
+						</group>
+						<group col="6" colspan="4">
+							<field name="compania"/>
+							<field name="folio"/>
+							<field name="fecha_entrega"/>
+						</group>
+						<label string="" colspan="2"/>
+						<button name="button_asignar" string="Asignar Caso" colspan="1" states="borrador" type="object" icon="STOCK_REDO"/>
+						<field name="state" colspan="4" widget="statusbar" statusbar_visible="borrador,asignada,aceptada,declinada,entregada,cancelada" statusbar_colors='{"cancelada":"red", "entregada":"green"}'/>
+					</page>
+					<page string="Verificador">
+						<group col="2" colspan="2">
+						</group>
+						<group col="6" colspan="2">
+							<field name="primera" colspan="2"/>
+							<field name="fecha_1a" colspan="4"/>
+							<field name="segunda" colspan="2"/>
+							<field name="fecha_2a" colspan="4"/>
+						</group>
+						<separator string="Datos Recabados por la Compañia Verificadora o la Sucursal" colspan="4"/>
+						<field name="actividad"/>
+						<field name="anuncio"/>
+						<field name="zona"/>
+						<field name="tipo_inmueble"/>
+						<group col="6" colspan="4">
+							<field name="num_pisos"/>
+							<field name="num_ventanas"/>
+							<field name="color"/>
+						</group>
+						<field name="entrevistado"/>
+						<field name="parentesco"/>
+						<group col="6" colspan="4">
+							<group col="2" colspan="2">
+								<field name="aceptada"/>
+								<field name="declinada"/>
+							</group>
+							<group col="2" colspan="4">
+								<field name="comentarios" colspan="2" rowspan="2"/>
+							</group>
+						</group>
+						<separator string="Causas de la declinación"/>
+						<group col="6" colspan="4">
+							<field name="a" colspan="6"/>
+							<field name="b" colspan="6"/>
+							<field name="c" colspan="6"/>
+							<field name="d" colspan="6"/>
+							<field name="e" colspan="6"/>
+							<field name="f" colspan="2"/>
+							<field name="especificar" colspan="4" rowspan="1"/>
+						</group>
+					</page>
+					<page string="Evidencias">
+						<field name="latitud"/>
+						<field name="longitud"/>
+						<separator string="Placa de Calle"/>
+						<separator string="Número Exterior"/>
+						<field name="placa" nolabel="1" widget="image"/>
+						<field name="num_ext" nolabel="1" widget="image"/>
+						<separator string="Fachada"/>
+						<separator string="Investigador"/>
+						<field name="fachada" nolabel="1" widget="image"/>
+						<field name="investigador" nolabel="1" widget="image"/>
+					</page>
+				</notebook>
             </form>
         </field>
     </record>
     
-    <!-- VISTA DE BUSQUEDA -->
+    <!-- VISTA DE BUSQUEDA
     <record id="inventario_equipo_view_search" model="ir.ui.view">
         <field name="name">inventario.equipo.view.search</field>
         <field name="model">inventario.equipo</field>
@@ -46,23 +137,21 @@
                 <newline/>
             </search>
         </field>
-    </record>
+    </record>-->
     
     <!-- ACCIONES PARA LAS VISTAS -->
-    <record id="action_inventario_tipo_equipo" model="ir.actions.act_window">
+    <record id="action_verificaciones" model="ir.actions.act_window">
         <field name="name">Verificaciones</field>
         <field name="res_model">verificaciones</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="verificaciones_view_tree"/>
-        <field name="search_view_id" ref="verificaciones_view_search"/>
+        <!--<field name="search_view_id" ref="verificaciones_view_search"/>-->
     </record>
                    
     <!-- MENUS -->
-    <menuitem name="Control de Equipo" id="menu_control_equipo" parent="menu_inventario"/>
-    <menuitem action="action_inventario_equipo" id="menu_action_inventario_equipo" parent="menu_control_equipo"/>
-    <menuitem action="action_inventario_tipo_equipo" id="menu_action_inventario_tipo_equipo" parent="menu_control_equipo"/>
-    <menuitem action="action_inventario_marca_equipo" id="menu_action_inventario_marca_equipo" parent="menu_control_equipo"/>
+    <menuitem name="Verificaciones" id="menu_verificaciones" parent="menu_inventario"/>
+    <menuitem action="action_verificaciones" id="menu_action_verificaciones" parent="menu_verificaciones"/>
     
     </data>
 </openerp>
