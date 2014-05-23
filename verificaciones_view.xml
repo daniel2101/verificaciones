@@ -26,7 +26,7 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="Verificación">
-				<group col="4" colspan="8"/>
+				<group col="4" colspan="8">
 					<group col="6" colspan="6">
 						<field name="sucursal" colspan="4"/>
 						<field name="no_sucursal" colspan="2"/>
@@ -38,7 +38,7 @@
 							<field name="pais_id" invisible="1"/>
 							<field name="colonia"/>
 							<field name="municipio"/>
-							<field name="estdo_id"/>
+							<field name="estado_id"/>
 							<field name="cp"/>
 						</group>
 					</group>
@@ -150,7 +150,7 @@
     </record>
                    
     <!-- MENUS -->
-    <menuitem name="Verificaciones" id="menu_verificaciones" parent="menu_inventario"/>
+    <menuitem name="Verificaciones" id="menu_verificaciones" parent="menu_verificaciones_principal"/>
     <menuitem action="action_verificaciones" id="menu_action_verificaciones" parent="menu_verificaciones"/>
     
     </data>

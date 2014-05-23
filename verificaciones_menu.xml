@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <menuitem name="Verificaciones Domiciliarias" id="menu_verificaciones" icon="terp-personal"
+        <menuitem name="Verificaciones Domiciliarias" id="menu_verificaciones_principal" icon="terp-personal"
             web_icon="images/icon.png"
             web_icon_hover="images/icon_hover.png"/>
     </data>
