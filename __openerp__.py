@@ -28,7 +28,7 @@
 
 {
     "name" : "Verificaciones",
-    "version" : "0.0.8",
+    "version" : "0.1.11",
     "depends": ["base"],
     "author" : "Salvador Daniel Pelayo Gómez",
     "website": "http://www.corporativoserca.com",
@@ -39,7 +39,7 @@ Modulo para el área de ESE Corporativo Serca.
     "init_xml" : [],
     "update_xml" : ["verificaciones_menu.xml",
                     "security/event_security.xml",
-                    "security/ir_model_access.xml",
+                    "security/ir.model.access.csv",
                     "verificaciones_view.xml",
                     ],
     "demo_xml" : [],

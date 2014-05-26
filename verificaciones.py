@@ -65,7 +65,8 @@ class verificaciones(osv.osv):
     def button_asignar(self, cr, uid, ids, context=None):
         verificaciones = self.read(cr, uid, ids, context=context)
         v = verificaciones[0]
-        vals = {'state': 'asignada'}
+        fecha = datetime.today()
+        vals = {'state': 'asignada', 'fecha_asignacion': fecha}
         return self.write(cr, uid, ids, vals)
 
     _name="verificaciones"
@@ -82,7 +83,7 @@ class verificaciones(osv.osv):
         'no_cliente': fields.char("Número de Cliente", size=15, required=True, readonly=True, states={'borrador': [('readonly', False)]}),#
         'name': fields.char("Nombre del Cliente", size=100, required=True, readonly=True, states={'borrador': [('readonly', False)]}, help="Nombre del cliente investigado o Denominación/Razón Social."),#
         'no_sucursal': fields.char("Número de Sucursal", size=10, required=True, readonly=True, states={'borrador': [('readonly', False)]}),#
-        'sucursal': fields.char("Nombre de Sucursal", size=100, readonly=True, states={'borrador': [('readonly', False)]}),#
+        'sucursal': fields.char("Nombre de Sucursal", size=100, required=True, readonly=True, states={'borrador': [('readonly', False)]}),#
         'domicilio': fields.text("Domicilio Principal", required=True, readonly=True, states={'borrador': [('readonly', False)]}, help="Calle y Número del Domicilio Principal."),#
         'telefono': fields.char("Número Telefónico", size=30, required=True, readonly=True, states={'borrador': [('readonly', False)]}),#
         'colonia': fields.char("Colonia", size=100, required=True, readonly=True, states={'borrador': [('readonly', False)]}),#

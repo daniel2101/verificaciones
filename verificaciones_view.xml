@@ -26,15 +26,15 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="Verificación">
-				<group col="4" colspan="8">
+				<group col="8" colspan="4">
 					<group col="6" colspan="6">
 						<field name="sucursal" colspan="4"/>
 						<field name="no_sucursal" colspan="2"/>
 						<field name="name" colspan="4"/>
 						<field name="no_cliente" colspan="2"/>
-						<field name="domicilio" colspan="4"/>
+						<field name="domicilio" colspan="4" widget="char"/>
 						<field name="telefono" colspan="2"/>
-						<group col="6" colspan="8">
+						<group col="8" colspan="6">
 							<field name="pais_id" invisible="1"/>
 							<field name="colonia"/>
 							<field name="municipio"/>
@@ -56,6 +56,7 @@
 							<field name="visitador"/>
 							<field name="fecha_asignacion"/>
 						</group>
+						<label string="" colspan="4"/>
 						<group col="6" colspan="4">
 							<field name="compania"/>
 							<field name="folio"/>
@@ -63,6 +64,7 @@
 						</group>
 						<label string="" colspan="2"/>
 						<button name="button_asignar" string="Asignar Caso" colspan="1" states="borrador" type="object" icon="STOCK_REDO"/>
+						<label string="" colspan="4"/>
 						<field name="state" colspan="4" widget="statusbar" statusbar_visible="borrador,asignada,aceptada,declinada,entregada,cancelada" statusbar_colors='{"cancelada":"red", "entregada":"green"}'/>
 					</page>
 					<page string="Verificador">
@@ -75,48 +77,62 @@
 							<field name="fecha_2a" colspan="4"/>
 						</group>
 						<separator string="Datos Recabados por la Compañia Verificadora o la Sucursal" colspan="4"/>
-						<field name="actividad"/>
-						<field name="anuncio"/>
-						<field name="zona"/>
-						<field name="tipo_inmueble"/>
+						<group col="4" colspan="4">
+							<field name="actividad"/>
+							<field name="anuncio"/>
+							<label string="" colspan="4"/>
+							<field name="zona"/>
+							<field name="tipo_inmueble"/>
+						</group>
+						<label string="" colspan="4"/>
 						<group col="6" colspan="4">
 							<field name="num_pisos"/>
 							<field name="num_ventanas"/>
 							<field name="color"/>
 						</group>
-						<field name="entrevistado"/>
-						<field name="parentesco"/>
-						<group col="6" colspan="4">
-							<group col="2" colspan="2">
-								<field name="aceptada"/>
-								<field name="declinada"/>
-							</group>
-							<group col="2" colspan="4">
-								<field name="comentarios" colspan="2" rowspan="2"/>
+						<label string="" colspan="4"/>
+						<group col="4" colspan="4">
+							<field name="entrevistado"/>
+							<field name="parentesco"/>
+							<group col="6" colspan="4">
+								<separator string="Indicar si la verificación fue:     " colspan="6"/>
+								<group col="2" colspan="2">
+									<field name="aceptada"/>
+									<field name="declinada"/>
+								</group>
+								<group col="2" colspan="4">
+									<field name="comentarios" colspan="2" rowspan="2"/>
+								</group>
 							</group>
 						</group>
 						<separator string="Causas de la declinación"/>
-						<group col="6" colspan="4">
-							<field name="a" colspan="6"/>
-							<field name="b" colspan="6"/>
-							<field name="c" colspan="6"/>
-							<field name="d" colspan="6"/>
-							<field name="e" colspan="6"/>
-							<field name="f" colspan="2"/>
-							<field name="especificar" colspan="4" rowspan="1"/>
+						<group col="7" colspan="4">
+							<field name="a" nolabel="1"/><label string="(A) No se localiza el domicilio o es inexistente." colspan="6"/>
+							<field name="b" nolabel="1"/><label string="(B) Domicilio vacío, en construcción, cambio o rentaba." colspan="6"/>
+							<field name="c" nolabel="1"/><label string="(C) En el domicilio no hay señales que corroboren que el cliente se dedique al giro manifestado" colspan="6"/>
+							<field name="d" nolabel="1"/><label string="(D) Se encuentra el domicilio, no hay quién o no proporcionan informaciión relacionada con el cliente o no lo conocen." colspan="6"/>
+							<field name="e" nolabel="1"/><label string="(E) El cliente o su representante legal no se hubican en el domicilio." colspan="6"/>
+							<field name="f" nolabel="1"/><label string="(F) Otro" colspan="6"/>
+							<field name="especificar" colspan="8" attrs="{'invisible':[('f','=',False)]}"/>
 						</group>
 					</page>
 					<page string="Evidencias">
-						<field name="latitud"/>
-						<field name="longitud"/>
-						<separator string="Placa de Calle"/>
-						<separator string="Número Exterior"/>
-						<field name="placa" nolabel="1" widget="image"/>
-						<field name="num_ext" nolabel="1" widget="image"/>
-						<separator string="Fachada"/>
-						<separator string="Investigador"/>
-						<field name="fachada" nolabel="1" widget="image"/>
-						<field name="investigador" nolabel="1" widget="image"/>
+						<group col="4" colspan="4">
+							<field name="latitud"/>
+							<field name="longitud"/>
+						</group>
+						<group col="2" colspan="2">
+							<separator string="Placa de Calle" colspan="2"/>
+							<field name="placa" nolabel="1" widget="image" colspan="2"/>
+							<separator string="Fachada" colspan="2"/>
+							<field name="fachada" nolabel="1" widget="image" colspan="2"/>
+						</group>
+						<group col="2" colspan="2">
+							<separator string="Número Exterior" colspan="2"/>
+							<field name="num_ext" nolabel="1" widget="image" colspan="2"/>
+							<separator string="Investigador" colspan="2"/>
+							<field name="investigador" nolabel="1" widget="image" colspan="2"/>
+						</group>
 					</page>
 				</notebook>
             </form>

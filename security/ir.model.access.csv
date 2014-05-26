@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+acceso_verificaciones_cordinador,Verificaciones Cordinador,model_verificaciones,verificaciones.verificaciones_cordinador,1,1,1,1
+acceso_verificaciones_verificador,Verificaciones Verificador,model_verificaciones,verificaciones.verificaciones_verificador,1,1,0,0
+acceso_verificaciones_consultas,Verificaciones Consultas,model_verificaciones,verificaciones.verificaciones_consultas,1,0,0,0
