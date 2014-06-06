@@ -8,13 +8,13 @@
         <field name="model">verificaciones</field>
         <field name="type">tree</field>
         <field name="arch" type="xml">
-            <tree colors="pink:state=='borrador';gray:state=='cancelada';blue:state=='asignada';green:state=='entregada';orange:state=='declinada'" string="Verificaciones">
-				<field name="no_cliente" select="1"/>
-                <field name="name" select="1"/>
-				<field name="visitador" select="1"/>
-				<field name="fecha_solicitud" string="Solicitud" select="1"/>
-				<field name="fecha_asignacion" string="Asignación" select="1"/>
-				<field name="state" select="1"/>
+            <tree colors="gray:state=='cancelada';blue:state=='asignada';green:state=='entregada';orange:state=='declinada'" string="Verificaciones">
+				<field name="no_cliente"/>
+                <field name="name"/>
+				<field name="visitador"/>
+				<field name="fecha_solicitud" string="Solicitud"/>
+				<field name="fecha_asignacion" string="Asignación"/>
+				<field name="state"/>
             </tree>
         </field>
     </record>
@@ -35,10 +35,9 @@
 						<field name="domicilio" colspan="4" widget="char"/>
 						<field name="telefono" colspan="2"/>
 						<group col="8" colspan="6">
-							<field name="pais_id" invisible="1"/>
 							<field name="colonia"/>
 							<field name="municipio"/>
-							<field name="estado_id"/>
+							<field name="estado"/>
 							<field name="cp"/>
 						</group>
 					</group>
@@ -53,7 +52,7 @@
 					<page string="Datos CSerca" groups="verificaciones.verificaciones_cordinador">
 						<group col="6" colspan="4">
 							<field name="user_id"/>
-							<field name="visitador"/>
+							<field name="verificador"/>
 							<field name="fecha_asignacion"/>
 						</group>
 						<label string="" colspan="4"/>
@@ -62,13 +61,19 @@
 							<field name="folio"/>
 							<field name="fecha_entrega"/>
 						</group>
-						<label string="" colspan="2"/>
-						<button name="button_asignar" string="Asignar Caso" colspan="1" states="borrador" type="object" icon="STOCK_REDO"/>
+						<group col="6" colspan="4">
+							<label string="" colspan="2"/>
+							<button name="button_entregar" string="Entregar" colspan="1" states="aceptada,declinada" type="object" icon="STOCK_APPLY"/>
+							<button name="button_asignar" string="Asignar Caso" colspan="1" states="borrador" type="object" icon="STOCK_REDO"/>
+							<button name="button_reasignar" string="Re-asignar Caso" colspan="1" states="asignada" type="object" icon="STOCK_UNDO"/>
+							<button name="button_cancelar" string="Cancelar" colspan="1" states="borrador,asignada" type="object" icon="STOCK_CANCEL"/>
+						</group>
 						<label string="" colspan="4"/>
-						<field name="state" colspan="4" widget="statusbar" statusbar_visible="borrador,asignada,aceptada,declinada,entregada,cancelada" statusbar_colors='{"cancelada":"red", "entregada":"green"}'/>
+						<field name="state" colspan="4" widget="statusbar" statusbar_visible="borrador,asignada,entregada" statusbar_colors='{"cancelada":"red", "entregada":"green"}'/>
 					</page>
 					<page string="Verificador">
 						<group col="2" colspan="2">
+							<field name="visitador" colspan="2"/>
 						</group>
 						<group col="6" colspan="2">
 							<field name="primera" colspan="2"/>
@@ -115,6 +120,11 @@
 							<field name="f" nolabel="1"/><label string="(F) Otro" colspan="6"/>
 							<field name="especificar" colspan="8" attrs="{'invisible':[('f','=',False)]}"/>
 						</group>
+						<group col="6" colspan="4">
+							<label string="" colspan="2"/>
+							<button name="button_entregar2" string="Terminar" colspan="1" states="asignada" type="object" icon="STOCK_APPLY"/>
+							<button name="button_regresar" string="Regresar Caso" colspan="1" states="aceptada, declinada" type="object" icon="STOCK_UNDO" groups="verificaciones.verificaciones_cordinador"/>
+						</group>
 					</page>
 					<page string="Evidencias">
 						<group col="4" colspan="4">
@@ -139,21 +149,31 @@
         </field>
     </record>
     
-    <!-- VISTA DE BUSQUEDA
-    <record id="inventario_equipo_view_search" model="ir.ui.view">
-        <field name="name">inventario.equipo.view.search</field>
-        <field name="model">inventario.equipo</field>
+    <!-- VISTA DE BUSQUEDA -->
+    <record id="verificaciones_view_search" model="ir.ui.view">
+        <field name="name">verificaciones.view.search</field>
+        <field name="model">verificaciones</field>
         <field name="type">search</field>
         <field name="arch" type="xml">
-            <search string="Equipo">
-                <filter string="EN USO" icon="STOCK_EDIT" domain="[('state','=','uso')]"/>
-                <filter string="DESCOMPUESTO" icon="STOCK_REDO" domain="[('state','=','descompuesto')]"/>
-                <filter string="FUERA" icon="STOCK_UNDO" domain="[('state','=','fuera')]"/>
-                <separator orientation="vertical"/>
+            <search string="Verificaciones">
+                <filter string="ENTREGADA" icon="STOCK_YES" domain="[('state','=','entregada')]"/>
+				<filter string="EN CURSO" icon="terp-project" domain="[('state','=', 'asignada')]"/>
+                <filter string="CANCELADA" icon="STOCK_CANCEL" domain="[('state','=','cancelada')]"/>
+                <field name="state"/>
+				<separator orientation="vertical"/>
                 <newline/>
+				<field name="no_cliente"/>
+				<field name="name"/>
+				<field name="no_sucursal"/>
+				<field name="sucursal"/>
+				<separator orientation="vertical"/>
+                <newline/>
+				<field name="estado" widget="select"/>
+				<field name="verificador" groups="verificaciones.verificaciones_cordinador"/>
+				<field name="investigador" groups="verificaciones.verificaciones_cordinador"/>
             </search>
         </field>
-    </record>-->
+    </record>
     
     <!-- ACCIONES PARA LAS VISTAS -->
     <record id="action_verificaciones" model="ir.actions.act_window">
@@ -162,12 +182,25 @@
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="verificaciones_view_tree"/>
-        <!--<field name="search_view_id" ref="verificaciones_view_search"/>-->
+        <field name="search_view_id" ref="verificaciones_view_search"/>
+    </record>
+	<!-- ACCIONES PARA LAS VISTAS VERIFICADORES -->
+	<record id="action_verificaciones2" model="ir.actions.act_window">
+        <field name="name">Verificaciones</field>
+        <field name="res_model">verificaciones</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="verificaciones_view_tree"/>
+        <field name="search_view_id" ref="verificaciones_view_search"/>
+        <field name="domain">[('verificador','=',uid), ('state','in','asignada, entregada')]</field>
+        <field name="filter" eval="True"/>
     </record>
                    
     <!-- MENUS -->
     <menuitem name="Verificaciones" id="menu_verificaciones" parent="menu_verificaciones_principal"/>
-    <menuitem action="action_verificaciones" id="menu_action_verificaciones" parent="menu_verificaciones"/>
+    <menuitem action="action_verificaciones" id="menu_action_verificaciones" parent="menu_verificaciones" groups="verificaciones.verificaciones_cordinador"/>
+	<menuitem action="action_verificaciones" id="menu_action_verificaciones" parent="menu_verificaciones" groups="verificaciones.verificaciones_consultas"/>
+	<menuitem action="action_verificaciones2" id="menu_action_verificaciones2" parent="menu_verificaciones" groups="verificaciones.verificaciones_verificador"/>
     
     </data>
 </openerp>

@@ -34,24 +34,18 @@ from osv import osv, fields
 class verificaciones(osv.osv):
 
     def copy(self, cr, uid, id, defaults=None, context=None):
-        raise osv.except_osv("Error", "La duplicación de registros esta desactivada, en su lugar crea un registro nuevo")
+        raise osv.except_osv("Error", "La duplicación de registros esta desactivada, en su lugar crea un registro nuevo.")
         return False
 
-    def _get_default_pais_id(self, cr, uid, context=None):
-        country_obj = self.pool.get('res.country')
-        ids = country_obj.search(cr, uid, [ ( 'code', '=', 'MX' ), ], limit=1)
-        id = ids and ids[0] or False
-        return id
-    
     def _get_company(self, cr, uid, context=None):
         country_obj = self.pool.get('res.company')
         ids = country_obj.search(cr, uid, [], limit=1)
         id = ids and ids[0] or False
         return id
-        
+
     def _get_user(self, cr, uid, context=None):
         return uid
-    
+
     def unlink(self, cr, uid, ids, context=None):
         verificaciones = self.read(cr, uid, ids, ['state'], context=context)
         unlink_ids = []
@@ -61,10 +55,36 @@ class verificaciones(osv.osv):
             else:
                 raise osv.except_osv(('Acción Invalida !'), ('Solo pueden ser eliminadas las verificaciones en borrador.'))
         return osv.osv.unlink(self, cr, uid, unlink_ids, context=context)
-        
+
+    def button_cancelar(self, cr, uid, ids, context=None):
+        vals = {'state': 'cancelada'}
+        return self.write(cr, uid, ids, vals)
+
+    def button_entregar(self, cr, uid, ids, context=None):
+        vals = {'state': 'entregada'}
+        return self.write(cr, uid, ids, vals)
+
+    def button_entregar2(self, cr, uid, ids, context=None):
+        verificaciones = self.read(cr, uid, ids, ['aceptada', 'declinada'], context=context)
+		vals = {}
+		if verificaciones[0]['aceptada'] and verificaciones[0]['declinada']:
+			else raise osv.except_osv("Error", "La verificación debe de ser marcada como aceptada o declinada, solo una de las dos.")
+		else if verificaciones[0]['aceptada']:
+			vals = {'state': 'aceptada'}
+		else if verificaciones[0]['declinada']:
+			vals = {'state': 'declinada'}
+		else raise osv.except_osv("Error", "La verificación debe de ser marcada como aceptada o declinada, solo una de las dos.")
+        return self.write(cr, uid, ids, vals)
+		
+	def button_regresar(self, cr, uid, ids, context=None):
+		vals = {'state': 'asignada'}
+        return self.write(cr, uid, ids, vals)
+
+    def button_reasignar(self, cr, uid, ids, context=None):
+        vals = {'state': 'borrador'}
+        return self.write(cr, uid, ids, vals)
+
     def button_asignar(self, cr, uid, ids, context=None):
-        verificaciones = self.read(cr, uid, ids, context=context)
-        v = verificaciones[0]
         fecha = datetime.today()
         vals = {'state': 'asignada', 'fecha_asignacion': fecha}
         return self.write(cr, uid, ids, vals)
@@ -89,9 +109,9 @@ class verificaciones(osv.osv):
         'colonia': fields.char("Colonia", size=100, required=True, readonly=True, states={'borrador': [('readonly', False)]}),#
         'cp': fields.char("Código Postal", size=5, required=True, readonly=True, states={'borrador': [('readonly', False)]}),#
         'municipio': fields.char("Municipio", size=100, required=True, readonly=True, states={'borrador': [('readonly', False)]}),#
-        'pais_id': fields.many2one("res.country", "Pais", required=True, readonly=True, states={'borrador': [('readonly', False)]}),#
-        'estado_id': fields.many2one("res.country.state", "Estado", domain="[('country_id','=',pais_id)]", required=True, readonly=True, states={'borrador': [('readonly', False)]}, help="Seleccione el Estado."),#
+        'estado': fields.char("Estado", size=100, required=True, readonly=True, states={'borrador': [('readonly', False)]}, help="Nombre del Estado."),#
         #DATOS RECABADOS POR LA COMPAÑIA VERIFICADORA O LA SUCURSAL
+        'visitador': fields.char("Visitador", size=500, states={'entregada': [('readonly', True)]}),
         'actividad': fields.char("Actividad o Giro", size=50, help="Confirmar actividad o giro.", states={'entregada': [('readonly', True)]}),#
         'anuncio': fields.boolean("Anuncio exterior", help="Marque la casilla si tiene anuncio exterior con nombre del negocio", states={'entregada': [('readonly', True)]}),#
         'zona': fields.selection((
@@ -136,7 +156,7 @@ class verificaciones(osv.osv):
         'investigador': fields.binary("Investigador", states={'entregada': [('readonly', True)]}),
         ##DATOS DE CONTROL CORPORATIVO SERCA
         'fecha_solicitud': fields.date("Fecha de Solicitud", required=True, readonly=True, states={'borrador': [('readonly', False)]}),#
-        'visitador': fields.many2one("res.users", "Visitador Asignado", readonly=True, states={'borrador': [('readonly', False)]}),#
+        'verificador': fields.many2one("res.users", "Verificador Asignado", readonly=True, states={'borrador': [('readonly', False)]}),#
         'user_id': fields.many2one("res.users", "Ejecutivo", required=True, readonly=True),#
         'fecha_asignacion': fields.datetime("Fecha y Hora de asignación", readonly=True),#
         'compania': fields.many2one("res.company", "Compañia verificadora", required=True, readonly=True, states={'borrador': [('readonly', False)]}),#
@@ -152,7 +172,6 @@ class verificaciones(osv.osv):
         ), "Estado", required=True),#
     }
     _defaults={
-	    'pais_id': _get_default_pais_id,
         'compania': _get_company,
         'folio': "NO APLICA",
         'state': "borrador",
