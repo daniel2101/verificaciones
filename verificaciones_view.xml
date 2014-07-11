@@ -9,16 +9,16 @@
         <field name="type">tree</field>
         <field name="arch" type="xml">
             <tree colors="gray:state=='cancelada';blue:state=='asignada';green:state=='entregada';orange:state=='declinada'" string="Verificaciones">
-				<field name="no_cliente"/>
+                <field name="no_cliente"/>
                 <field name="name"/>
-				<field name="visitador"/>
-				<field name="fecha_solicitud" string="Solicitud"/>
-				<field name="fecha_asignacion" string="Asignación"/>
-				<field name="state"/>
+                <field name="visitador"/>
+                <field name="fecha_solicitud" string="Solicitud"/>
+                <field name="fecha_asignacion" string="Asignación"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
-	
+    
     <!-- VISTA DE FORMULARIO -->
     <record id="verificaciones_view_form" model="ir.ui.view">
         <field name="name">verificaciones.view.form</field>
@@ -26,125 +26,125 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="Verificación">
-				<group col="8" colspan="4">
-					<group col="6" colspan="6">
-						<field name="sucursal" colspan="4"/>
-						<field name="no_sucursal" colspan="2"/>
-						<field name="name" colspan="4"/>
-						<field name="no_cliente" colspan="2"/>
-						<field name="domicilio" colspan="4" widget="char"/>
-						<field name="telefono" colspan="2"/>
-						<group col="8" colspan="6">
-							<field name="colonia"/>
-							<field name="municipio"/>
-							<field name="estado"/>
-							<field name="cp"/>
-						</group>
-					</group>
-					<group col="2" colspan="2">
-						<field name="tipo_persona"/>
-						<field name="fecha_solicitud" readonly="1" groups="verificaciones.verificaciones_verificador"/>
-						<field name="fecha_solicitud" readonly="1" groups="verificaciones.verificaciones_consultas"/>
-						<field name="fecha_solicitud" groups="verificaciones.verificaciones_cordinador"/>
-					</group>
-				</group>
-				<notebook>
-					<page string="Datos CSerca" groups="verificaciones.verificaciones_cordinador">
-						<group col="6" colspan="4">
-							<field name="user_id"/>
-							<field name="verificador"/>
-							<field name="fecha_asignacion"/>
-						</group>
-						<label string="" colspan="4"/>
-						<group col="6" colspan="4">
-							<field name="compania"/>
-							<field name="folio"/>
-							<field name="fecha_entrega"/>
-						</group>
-						<group col="6" colspan="4">
-							<label string="" colspan="2"/>
-							<button name="button_entregar" string="Entregar" colspan="1" states="aceptada,declinada" type="object" icon="STOCK_APPLY"/>
-							<button name="button_asignar" string="Asignar Caso" colspan="1" states="borrador" type="object" icon="STOCK_REDO"/>
-							<button name="button_reasignar" string="Re-asignar Caso" colspan="1" states="asignada" type="object" icon="STOCK_UNDO"/>
-							<button name="button_cancelar" string="Cancelar" colspan="1" states="borrador,asignada" type="object" icon="STOCK_CANCEL"/>
-						</group>
-						<label string="" colspan="4"/>
-						<field name="state" colspan="4" widget="statusbar" statusbar_visible="borrador,asignada,entregada" statusbar_colors='{"cancelada":"red", "entregada":"green"}'/>
-					</page>
-					<page string="Verificador">
-						<group col="2" colspan="2">
-							<field name="visitador" colspan="2"/>
-						</group>
-						<group col="6" colspan="2">
-							<field name="primera" colspan="2"/>
-							<field name="fecha_1a" colspan="4"/>
-							<field name="segunda" colspan="2"/>
-							<field name="fecha_2a" colspan="4"/>
-						</group>
-						<separator string="Datos Recabados por la Compañia Verificadora o la Sucursal" colspan="4"/>
-						<group col="4" colspan="4">
-							<field name="actividad"/>
-							<field name="anuncio"/>
-							<label string="" colspan="4"/>
-							<field name="zona"/>
-							<field name="tipo_inmueble"/>
-						</group>
-						<label string="" colspan="4"/>
-						<group col="6" colspan="4">
-							<field name="num_pisos"/>
-							<field name="num_ventanas"/>
-							<field name="color"/>
-						</group>
-						<label string="" colspan="4"/>
-						<group col="4" colspan="4">
-							<field name="entrevistado"/>
-							<field name="parentesco"/>
-							<group col="6" colspan="4">
-								<separator string="Indicar si la verificación fue:     " colspan="6"/>
-								<group col="2" colspan="2">
-									<field name="aceptada"/>
-									<field name="declinada"/>
-								</group>
-								<group col="2" colspan="4">
-									<field name="comentarios" colspan="2" rowspan="2"/>
-								</group>
-							</group>
-						</group>
-						<separator string="Causas de la declinación"/>
-						<group col="7" colspan="4">
-							<field name="a" nolabel="1"/><label string="(A) No se localiza el domicilio o es inexistente." colspan="6"/>
-							<field name="b" nolabel="1"/><label string="(B) Domicilio vacío, en construcción, cambio o rentaba." colspan="6"/>
-							<field name="c" nolabel="1"/><label string="(C) En el domicilio no hay señales que corroboren que el cliente se dedique al giro manifestado" colspan="6"/>
-							<field name="d" nolabel="1"/><label string="(D) Se encuentra el domicilio, no hay quién o no proporcionan informaciión relacionada con el cliente o no lo conocen." colspan="6"/>
-							<field name="e" nolabel="1"/><label string="(E) El cliente o su representante legal no se hubican en el domicilio." colspan="6"/>
-							<field name="f" nolabel="1"/><label string="(F) Otro" colspan="6"/>
-							<field name="especificar" colspan="8" attrs="{'invisible':[('f','=',False)]}"/>
-						</group>
-						<group col="6" colspan="4">
-							<label string="" colspan="2"/>
-							<button name="button_entregar2" string="Terminar" colspan="1" states="asignada" type="object" icon="STOCK_APPLY"/>
-							<button name="button_regresar" string="Regresar Caso" colspan="1" states="aceptada, declinada" type="object" icon="STOCK_UNDO" groups="verificaciones.verificaciones_cordinador"/>
-						</group>
-					</page>
-					<page string="Evidencias">
-						<group col="4" colspan="4">
-							<field name="latitud"/>
-							<field name="longitud"/>
-						</group>
-						<group col="2" colspan="2">
-							<separator string="Placa de Calle" colspan="2"/>
-							<field name="placa" nolabel="1" widget="image" colspan="2"/>
-							<separator string="Fachada" colspan="2"/>
-							<field name="fachada" nolabel="1" widget="image" colspan="2"/>
-						</group>
-						<group col="2" colspan="2">
-							<separator string="Número Exterior" colspan="2"/>
-							<field name="num_ext" nolabel="1" widget="image" colspan="2"/>
-							<separator string="Investigador" colspan="2"/>
-							<field name="investigador" nolabel="1" widget="image" colspan="2"/>
-						</group>
-					</page>
-				</notebook>
+                <group col="8" colspan="4">
+                    <group col="6" colspan="6">
+                        <field name="sucursal" colspan="4"/>
+                        <field name="no_sucursal" colspan="2"/>
+                        <field name="name" colspan="4"/>
+                        <field name="no_cliente" colspan="2"/>
+                        <field name="domicilio" colspan="4" widget="char"/>
+                        <field name="telefono" colspan="2"/>
+                        <group col="8" colspan="6">
+                            <field name="colonia"/>
+                            <field name="municipio"/>
+                            <field name="estado"/>
+                            <field name="cp"/>
+                        </group>
+                    </group>
+                    <group col="2" colspan="2">
+                        <field name="tipo_persona"/>
+                        <field name="fecha_solicitud" readonly="1" groups="verificaciones.verificaciones_verificador"/>
+                        <field name="fecha_solicitud" readonly="1" groups="verificaciones.verificaciones_consultas"/>
+                        <field name="fecha_solicitud" groups="verificaciones.verificaciones_cordinador"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Datos CSerca" groups="verificaciones.verificaciones_cordinador">
+                        <group col="6" colspan="4">
+                            <field name="user_id"/>
+                            <field name="verificador"/>
+                            <field name="fecha_asignacion"/>
+                        </group>
+                        <label string="" colspan="4"/>
+                        <group col="6" colspan="4">
+                            <field name="compania"/>
+                            <field name="folio"/>
+                            <field name="fecha_entrega"/>
+                        </group>
+                        <group col="6" colspan="4">
+                            <label string="" colspan="2"/>
+                            <button name="button_entregar" string="Entregar" colspan="1" states="aceptada,declinada" type="object" icon="STOCK_APPLY"/>
+                            <button name="button_asignar" string="Asignar Caso" colspan="1" states="borrador" type="object" icon="STOCK_REDO"/>
+                            <button name="button_reasignar" string="Re-asignar Caso" colspan="1" states="asignada" type="object" icon="STOCK_UNDO"/>
+                            <button name="button_cancelar" string="Cancelar" colspan="1" states="borrador,asignada" type="object" icon="STOCK_CANCEL"/>
+                        </group>
+                        <label string="" colspan="4"/>
+                        <field name="state" colspan="4" widget="statusbar" statusbar_visible="borrador,asignada,entregada" statusbar_colors='{"cancelada":"red", "entregada":"green"}'/>
+                    </page>
+                    <page string="Verificador">
+                        <group col="2" colspan="2">
+                            <field name="visitador" colspan="2"/>
+                        </group>
+                        <group col="6" colspan="2">
+                            <field name="primera" colspan="2"/>
+                            <field name="fecha_1a" colspan="4"/>
+                            <field name="segunda" colspan="2"/>
+                            <field name="fecha_2a" colspan="4"/>
+                        </group>
+                        <separator string="Datos Recabados por la Compañia Verificadora o la Sucursal" colspan="4"/>
+                        <group col="4" colspan="4">
+                            <field name="actividad"/>
+                            <field name="anuncio"/>
+                            <label string="" colspan="4"/>
+                            <field name="zona"/>
+                            <field name="tipo_inmueble"/>
+                        </group>
+                        <label string="" colspan="4"/>
+                        <group col="6" colspan="4">
+                            <field name="num_pisos"/>
+                            <field name="num_ventanas"/>
+                            <field name="color"/>
+                        </group>
+                        <label string="" colspan="4"/>
+                        <group col="4" colspan="4">
+                            <field name="entrevistado"/>
+                            <field name="parentesco"/>
+                            <group col="6" colspan="4">
+                                <separator string="Indicar si la verificación fue:     " colspan="6"/>
+                                <group col="2" colspan="2">
+                                    <field name="aceptada"/>
+                                    <field name="declinada"/>
+                                </group>
+                                <group col="2" colspan="4">
+                                    <field name="comentarios" colspan="2" rowspan="2"/>
+                                </group>
+                            </group>
+                        </group>
+                        <separator string="Causas de la declinación"/>
+                        <group col="7" colspan="4">
+                            <field name="a" nolabel="1"/><label string="(A) No se localiza el domicilio o es inexistente." colspan="6"/>
+                            <field name="b" nolabel="1"/><label string="(B) Domicilio vacío, en construcción, cambio o rentaba." colspan="6"/>
+                            <field name="c" nolabel="1"/><label string="(C) En el domicilio no hay señales que corroboren que el cliente se dedique al giro manifestado" colspan="6"/>
+                            <field name="d" nolabel="1"/><label string="(D) Se encuentra el domicilio, no hay quién o no proporcionan informaciión relacionada con el cliente o no lo conocen." colspan="6"/>
+                            <field name="e" nolabel="1"/><label string="(E) El cliente o su representante legal no se hubican en el domicilio." colspan="6"/>
+                            <field name="f" nolabel="1"/><label string="(F) Otro" colspan="6"/>
+                            <field name="especificar" colspan="8" attrs="{'invisible':[('f','=',False)]}"/>
+                        </group>
+                        <group col="6" colspan="4">
+                            <label string="" colspan="2"/>
+                            <button name="button_entregar2" string="Terminar" colspan="1" states="asignada" type="object" icon="STOCK_APPLY" groups="verificaciones.verificaciones_verificador"/>
+                            <button name="button_regresar" string="Regresar Caso" colspan="1" states="aceptada, declinada" type="object" icon="STOCK_UNDO" groups="verificaciones.verificaciones_cordinador"/>
+                        </group>
+                    </page>
+                    <page string="Evidencias">
+                        <group col="4" colspan="4">
+                            <field name="latitud"/>
+                            <field name="longitud"/>
+                        </group>
+                        <group col="2" colspan="2">
+                            <separator string="Placa de Calle" colspan="2"/>
+                            <field name="placa" nolabel="1" widget="image" colspan="2"/>
+                            <separator string="Fachada" colspan="2"/>
+                            <field name="fachada" nolabel="1" widget="image" colspan="2"/>
+                        </group>
+                        <group col="2" colspan="2">
+                            <separator string="Número Exterior" colspan="2"/>
+                            <field name="num_ext" nolabel="1" widget="image" colspan="2"/>
+                            <separator string="Investigador" colspan="2"/>
+                            <field name="investigador" nolabel="1" widget="image" colspan="2"/>
+                        </group>
+                    </page>
+                </notebook>
             </form>
         </field>
     </record>
@@ -157,20 +157,23 @@
         <field name="arch" type="xml">
             <search string="Verificaciones">
                 <filter string="ENTREGADA" icon="STOCK_YES" domain="[('state','=','entregada')]"/>
-				<filter string="EN CURSO" icon="terp-project" domain="[('state','=', 'asignada')]"/>
+                <filter string="EN CURSO" icon="terp-project" domain="[('state','=', 'asignada')]"/>
                 <filter string="CANCELADA" icon="STOCK_CANCEL" domain="[('state','=','cancelada')]"/>
-                <field name="state"/>
 				<separator orientation="vertical"/>
-                <newline/>
+				<field name="state"/>
 				<field name="no_cliente"/>
-				<field name="name"/>
-				<field name="no_sucursal"/>
-				<field name="sucursal"/>
-				<separator orientation="vertical"/>
-                <newline/>
-				<field name="estado" widget="select"/>
-				<field name="verificador" groups="verificaciones.verificaciones_cordinador"/>
-				<field name="investigador" groups="verificaciones.verificaciones_cordinador"/>
+				<newline/>
+                <group expand="0" string="Más Filtros">
+					<field name="name"/>
+					<field name="no_sucursal"/>
+					<field name="sucursal"/>
+					<field name="estado"/>
+					<newline/>
+					<field name="fecha_solicitud"/>
+					<field name="fecha_entrega"/>
+					<field name="verificador"/>
+					<field name="visitador"/>
+				</group>
             </search>
         </field>
     </record>
@@ -184,23 +187,23 @@
         <field name="view_id" ref="verificaciones_view_tree"/>
         <field name="search_view_id" ref="verificaciones_view_search"/>
     </record>
-	<!-- ACCIONES PARA LAS VISTAS VERIFICADORES -->
-	<record id="action_verificaciones2" model="ir.actions.act_window">
+    <!-- ACCIONES PARA LAS VISTAS VERIFICADORES -->
+    <record id="action_verificaciones2" model="ir.actions.act_window">
         <field name="name">Verificaciones</field>
         <field name="res_model">verificaciones</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="verificaciones_view_tree"/>
         <field name="search_view_id" ref="verificaciones_view_search"/>
-        <field name="domain">[('verificador','=',uid), ('state','in','asignada, entregada')]</field>
+        <field name="domain">[('verificador','=',uid), ('state','=','asignada')]</field>
         <field name="filter" eval="True"/>
     </record>
                    
     <!-- MENUS -->
     <menuitem name="Verificaciones" id="menu_verificaciones" parent="menu_verificaciones_principal"/>
     <menuitem action="action_verificaciones" id="menu_action_verificaciones" parent="menu_verificaciones" groups="verificaciones.verificaciones_cordinador"/>
-	<menuitem action="action_verificaciones" id="menu_action_verificaciones" parent="menu_verificaciones" groups="verificaciones.verificaciones_consultas"/>
-	<menuitem action="action_verificaciones2" id="menu_action_verificaciones2" parent="menu_verificaciones" groups="verificaciones.verificaciones_verificador"/>
+    <menuitem action="action_verificaciones" id="menu_action_verificaciones" parent="menu_verificaciones" groups="verificaciones.verificaciones_consultas"/>
+    <menuitem action="action_verificaciones2" id="menu_action_verificaciones2" parent="menu_verificaciones" groups="verificaciones.verificaciones_verificador"/>
     
     </data>
 </openerp>

@@ -33,13 +33,91 @@ from osv import osv, fields
 
 class verificaciones(osv.osv):
 
-    def copy(self, cr, uid, id, defaults=None, context=None):
+    def getLogo(self, cr, uid, ids, context=None):
+        img = self.pool.get('ir.header_img');
+        ids = img.search(cr, uid, [('name', '=', 'banamex')], limit=1)
+        logo = img.read(cr, uid, ids, ['img', 'type'], context=context)[0]
+        image = '<img width="184" height="42" src="data:image/%s;base64,%s" />'%( logo['type'], str(logo['img']))
+        return image;
+    
+    def getImage1(self, cr, uid, ids, context=None):
+        img = self.read(cr, uid, ids, ['placa'], context=context)[0]
+        image = '<img width="385" height="385" src="data:image/jpg;base64,%s" />'%(str(img['placa']))
+        return image;
+    
+    def getImage2(self, cr, uid, ids, context=None):
+        img = self.read(cr, uid, ids, ['num_ext'], context=context)[0]
+        image = '<img width="385" height="385" src="data:image/jpg;base64,%s" />'%(str(img['num_ext']))
+        return image;
+    
+    def getImage3(self, cr, uid, ids, context=None):
+        img = self.read(cr, uid, ids, ['fachada'], context=context)[0]
+        image = '<img width="385" height="385" src="data:image/jpg;base64,%s" />'%(str(img['fachada']))
+        return image;
+        
+    def getImage4(self, cr, uid, ids, context=None):
+        img = self.read(cr, uid, ids, ['investigador'], context=context)[0]
+        image = '<img width="385" height="385" src="data:image/jpg;base64,%s" />'%(str(img['investigador']))
+        return image;
+
+    def day1(self, cr, uid, ids, context=None):
+        fecha = self.read(cr, uid, ids, ['fecha_1a'], context=context)[0]
+        return fecha['fecha_1a'].split('-')[2]
+
+    def month1(self, cr, uid, ids, context=None):
+        fecha = self.read(cr, uid, ids, ['fecha_1a'], context=context)[0]
+        return fecha['fecha_1a'].split('-')[1]
+
+    def year1(self, cr, uid, ids, context=None):
+        fecha = self.read(cr, uid, ids, ['fecha_1a'], context=context)[0]
+        return fecha['fecha_1a'].split('-')[0]
+
+    def day2(self, cr, uid, ids, context=None):
+        fecha = self.read(cr, uid, ids, ['fecha_2a'], context=context)[0]
+        return fecha['fecha_2a'].split('-')[2]
+
+    def month2(self, cr, uid, ids, context=None):
+        fecha = self.read(cr, uid, ids, ['fecha_2a'], context=context)[0]
+        return fecha['fecha_2a'].split('-')[1]
+
+    def year2(self, cr, uid, ids, context=None):
+        fecha = self.read(cr, uid, ids, ['fecha_2a'], context=context)[0]
+        return fecha['fecha_2a'].split('-')[0]
+
+    def write(self, cr, uid, ids, defaults=None, context=None):
+        super(verificaciones, self).write(cr, uid, ids, defaults, context=context)
+        ver = self.read(cr, uid, ids, ['aceptada', 'declinada'], context=context)
+        if (ver[0]['aceptada'] and ver[0]['declinada']):
+            raise osv.except_osv("Error", "La verificación debe de ser marcada como aceptada o declinada, solo una de las dos.")
+        cont = 0
+        v = self.read(cr, uid, ids, ['a', 'b', 'c', 'd', 'e', 'f'], context=context)[0]
+        if v['a']: 
+            cont+=1
+        if v['b']: 
+            cont+=1
+        if v['c']:
+            cont+=1
+        if v['d']:
+            cont+=1
+        if v['e']:
+            cont+=1
+        if v['f']:
+            cont+=1
+        if cont > 1:
+            raise osv.except_osv("Error!", "Solo se puede seleccionar una causa por la cual se declino la visita!")
+        if cont == 1 and ver[0]['aceptada']:
+            raise osv.except_osv("Error!", "La verificación se marco como aceptada y al mismo tiempo se marco una causa de declinación.")
+        if cont == 0 and ver[0]['declinada']:
+            raise osv.except_osv("Error!", "La verificación se marco como declinada y no se marco una causa de declinación.")
+        return True
+
+    """def copy(self, cr, uid, id, defaults=None, context=None):
         raise osv.except_osv("Error", "La duplicación de registros esta desactivada, en su lugar crea un registro nuevo.")
         return False
-
+"""
     def _get_company(self, cr, uid, context=None):
-        country_obj = self.pool.get('res.company')
-        ids = country_obj.search(cr, uid, [], limit=1)
+        cmp_obj = self.pool.get('res.company')
+        ids = cmp_obj.search(cr, uid, [], limit=1)
         id = ids and ids[0] or False
         return id
 
@@ -66,18 +144,34 @@ class verificaciones(osv.osv):
 
     def button_entregar2(self, cr, uid, ids, context=None):
         verificaciones = self.read(cr, uid, ids, ['aceptada', 'declinada'], context=context)
-		vals = {}
-		if verificaciones[0]['aceptada'] and verificaciones[0]['declinada']:
-			else raise osv.except_osv("Error", "La verificación debe de ser marcada como aceptada o declinada, solo una de las dos.")
-		else if verificaciones[0]['aceptada']:
-			vals = {'state': 'aceptada'}
-		else if verificaciones[0]['declinada']:
-			vals = {'state': 'declinada'}
-		else raise osv.except_osv("Error", "La verificación debe de ser marcada como aceptada o declinada, solo una de las dos.")
+        cont = 0
+        v = self.read(cr, uid, ids, ['a', 'b', 'c', 'd', 'e', 'f'], context=context)[0]
+        if v['a']: 
+            cont+=1
+        if v['b']: 
+            cont+=1
+        if v['c']:
+            cont+=1
+        if v['d']:
+            cont+=1
+        if v['e']:
+            cont+=1
+        if v['f']:
+            cont+=1
+        if cont > 1:
+            raise osv.except_osv("Error!", "Solo se puede seleccionar más de una causa por la cual se declino la visita!")
+        vals = {}
+        if (verificaciones[0]['aceptada'] and verificaciones[0]['declinada']):
+            raise osv.except_osv("Error", "La verificación debe de ser marcada como aceptada o declinada, solo una de las dos.")
+        elif (verificaciones[0]['aceptada']):
+            vals = {'state': 'aceptada'}
+        elif (verificaciones[0]['declinada']):
+            vals = {'state': 'declinada'}
+        else: raise osv.except_osv("Error", "La verificación debe de ser marcada como aceptada o declinada, solo una de las dos.")
         return self.write(cr, uid, ids, vals)
-		
-	def button_regresar(self, cr, uid, ids, context=None):
-		vals = {'state': 'asignada'}
+        
+    def button_regresar(self, cr, uid, ids, context=None):
+        vals = {'state': 'asignada'}
         return self.write(cr, uid, ids, vals)
 
     def button_reasignar(self, cr, uid, ids, context=None):

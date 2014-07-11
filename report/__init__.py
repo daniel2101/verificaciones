@@ -25,26 +25,4 @@
 #
 ##############################################################################
 
-
-{
-    "name" : "Verificaciones",
-    "version" : "0.5.21",
-    "depends": ["base", "report_webkit"],
-    "author" : "Salvador Daniel Pelayo Gómez",
-    "website": "http://www.corporativoserca.com",
-    "category" : "Generic Modules/Others",
-    "description" : """
-Modulo para el área de ESE Corporativo Serca.
-""",
-    "init_xml" : [],
-    "update_xml" : ["verificaciones_menu.xml",
-                    "security/event_security.xml",
-                    "security/ir.model.access.csv",
-                    "report/verificaciones_report.xml",
-                    "verificaciones_view.xml",
-                    ],
-    "demo_xml" : [],
-    "installable" : True,
-    'auto_install': False,
-    'application': True,
-}
+import verificaciones_report
