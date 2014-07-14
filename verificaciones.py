@@ -42,22 +42,22 @@ class verificaciones(osv.osv):
     
     def getImage1(self, cr, uid, ids, context=None):
         img = self.read(cr, uid, ids, ['placa'], context=context)[0]
-        image = '<img width="385" height="385" src="data:image/jpg;base64,%s" />'%(str(img['placa']))
+        image = '<img width="430" height="385" src="data:image/jpg;base64,%s" />'%(str(img['placa']))
         return image;
     
     def getImage2(self, cr, uid, ids, context=None):
         img = self.read(cr, uid, ids, ['num_ext'], context=context)[0]
-        image = '<img width="385" height="385" src="data:image/jpg;base64,%s" />'%(str(img['num_ext']))
+        image = '<img width="410" height="385" src="data:image/jpg;base64,%s" />'%(str(img['num_ext']))
         return image;
     
     def getImage3(self, cr, uid, ids, context=None):
         img = self.read(cr, uid, ids, ['fachada'], context=context)[0]
-        image = '<img width="385" height="385" src="data:image/jpg;base64,%s" />'%(str(img['fachada']))
+        image = '<img width="430" height="385" src="data:image/jpg;base64,%s" />'%(str(img['fachada']))
         return image;
         
     def getImage4(self, cr, uid, ids, context=None):
         img = self.read(cr, uid, ids, ['investigador'], context=context)[0]
-        image = '<img width="385" height="385" src="data:image/jpg;base64,%s" />'%(str(img['investigador']))
+        image = '<img width="410" height="385" src="data:image/jpg;base64,%s" />'%(str(img['investigador']))
         return image;
 
     def day1(self, cr, uid, ids, context=None):
@@ -139,7 +139,8 @@ class verificaciones(osv.osv):
         return self.write(cr, uid, ids, vals)
 
     def button_entregar(self, cr, uid, ids, context=None):
-        vals = {'state': 'entregada'}
+        fecha = datetime.today()
+        vals = {'state': 'entregada', 'fecha_entrega': fecha}
         return self.write(cr, uid, ids, vals)
 
     def button_entregar2(self, cr, uid, ids, context=None):
@@ -263,7 +264,17 @@ class verificaciones(osv.osv):
             ("declinada", "Verificación Declinada"),
             ("entregada", "Entregada"),
             ("cancelada", "Cancelada")
-        ), "Estado", required=True),#
+        ), "Estatus", required=True),#
+        #Cobranza
+        'cobertura': fields.selection((
+            ("local", "LOCAL"),
+            ("foraneo", "FORANEO"),
+            ("dispercion", "DISPERCION")
+        ), "Cobertura"),
+        'costo': fields.float("Costo", digits=(5,2)),
+        'viaticos': fields.float("Viaticos", digits=(5,2)),
+        'penalizada': fields.boolean("Penalizada"),
+        'penalizada_causas': fields.text("Causas de penalización"),
     }
     _defaults={
         'compania': _get_company,

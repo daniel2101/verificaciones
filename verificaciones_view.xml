@@ -8,7 +8,7 @@
         <field name="model">verificaciones</field>
         <field name="type">tree</field>
         <field name="arch" type="xml">
-            <tree colors="gray:state=='cancelada';blue:state=='asignada';green:state=='entregada';orange:state=='declinada'" string="Verificaciones">
+            <tree colors="gray:state=='cancelada';blue:state=='asignada';green:state=='entregada';orange:state=='declinada'; purple:state=='aceptada'" string="Verificaciones">
                 <field name="no_cliente"/>
                 <field name="name"/>
                 <field name="visitador"/>
@@ -50,6 +50,7 @@
                 </group>
                 <notebook>
                     <page string="Datos CSerca" groups="verificaciones.verificaciones_cordinador">
+						<separator string="Cordinador de Verificaciones" colspan="4"/>
                         <group col="6" colspan="4">
                             <field name="user_id"/>
                             <field name="verificador"/>
@@ -61,6 +62,27 @@
                             <field name="folio"/>
                             <field name="fecha_entrega"/>
                         </group>
+						<label string="" colspan="4"/>
+						<label string="" colspan="4"/>
+						<separator string="Cobranza" colspan="4"/>
+                        <group col="6" colspan="4">
+                            <field name="cobertura"/>
+							<field name="viaticos"/>
+                            <field name="costo"/>
+                        </group>
+						<label string="" colspan="4"/>
+						<label string="" colspan="4"/>
+						<separator string="Penalización" colspan="4"/>
+						<group col="10" colspan="4">
+							<group col="2" colspan="2">
+								<field name="penalizada"/>
+							</group>
+							<group col="2" colspan="8">
+								<field name="penalizada_causas" attrs="{'invisible':[('penalizada','=',False)]}"/>
+							</group>
+						</group>
+						<label string="" colspan="4"/>
+						<label string="" colspan="4"/>
                         <group col="6" colspan="4">
                             <label string="" colspan="2"/>
                             <button name="button_entregar" string="Entregar" colspan="1" states="aceptada,declinada" type="object" icon="STOCK_APPLY"/>
@@ -110,8 +132,8 @@
                                 </group>
                             </group>
                         </group>
-                        <separator string="Causas de la declinación"/>
-                        <group col="7" colspan="4">
+						<group col="7" colspan="4" attrs="{'invisible':[('declinada','=',False)]}">
+							<separator string="Causas de la declinación" colspan="7"/>
                             <field name="a" nolabel="1"/><label string="(A) No se localiza el domicilio o es inexistente." colspan="6"/>
                             <field name="b" nolabel="1"/><label string="(B) Domicilio vacío, en construcción, cambio o rentaba." colspan="6"/>
                             <field name="c" nolabel="1"/><label string="(C) En el domicilio no hay señales que corroboren que el cliente se dedique al giro manifestado" colspan="6"/>
@@ -123,6 +145,7 @@
                         <group col="6" colspan="4">
                             <label string="" colspan="2"/>
                             <button name="button_entregar2" string="Terminar" colspan="1" states="asignada" type="object" icon="STOCK_APPLY" groups="verificaciones.verificaciones_verificador"/>
+							<button name="button_entregar2" string="Terminar" colspan="1" states="asignada" type="object" icon="STOCK_APPLY" groups="verificaciones.verificaciones_cordinador"/>
                             <button name="button_regresar" string="Regresar Caso" colspan="1" states="aceptada, declinada" type="object" icon="STOCK_UNDO" groups="verificaciones.verificaciones_cordinador"/>
                         </group>
                     </page>

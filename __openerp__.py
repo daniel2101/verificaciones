@@ -28,7 +28,7 @@
 
 {
     "name" : "Verificaciones",
-    "version" : "0.5.21",
+    "version" : "0.6.24",
     "depends": ["base", "report_webkit"],
     "author" : "Salvador Daniel Pelayo Gómez",
     "website": "http://www.corporativoserca.com",

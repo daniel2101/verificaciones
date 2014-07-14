@@ -5883,7 +5883,7 @@ ${ver.getLogo()|n}</span><span style="mso-ignore:vglayout2">
   <td height="20" class="xl6625590" style="height:15.0pt"></td>
   <td class="xl6625590"></td>
   <td class="xl12025590"><span style="mso-ignore:vglayout;
-  position:absolute;z-index:7;margin-left:10px;margin-top:-2px;width:385px;
+  position:absolute;z-index:7;margin-left:10px;margin-top:-2px;width:430px;
   height:385px">
 	${ver.getImage1()|n}
 	</span>
@@ -5909,7 +5909,7 @@ ${ver.getLogo()|n}</span><span style="mso-ignore:vglayout2">
   <td class="xl6625590"></td>
   <td class="xl11725590">
 	<span style="mso-ignore:vglayout;
-  position:absolute;z-index:7;margin-left:10px;margin-top:-2px;width:385px;
+  position:absolute;z-index:7;margin-left:10px;margin-top:-2px;width:410px;
   height:385px">
 	${ver.getImage2()|n}
 	</span>
@@ -6577,7 +6577,7 @@ ${ver.getLogo()|n}</span><span style="mso-ignore:vglayout2">
   <td class="xl6625590"></td>
   <td class="xl12025590">
 	<span style="mso-ignore:vglayout;
-  position:absolute;z-index:7;margin-left:10px;margin-top:-2px;width:385px;
+  position:absolute;z-index:7;margin-left:10px;margin-top:-2px;width:430px;
   height:385px">
 	${ver.getImage3()|n}
 	</span>
@@ -6603,7 +6603,7 @@ ${ver.getLogo()|n}</span><span style="mso-ignore:vglayout2">
   <td class="xl6625590"></td>
   <td class="xl12025590">
 	<span style="mso-ignore:vglayout;
-  position:absolute;z-index:7;margin-left:10px;margin-top:-2px;width:385px;
+  position:absolute;z-index:7;margin-left:10px;margin-top:-2px;width:410px;
   height:385px">
 	${ver.getImage4()|n}
 	</span>
